@@ -1,6 +1,8 @@
 import sys
 import os
 import socket
+import string
+import time
 
 STOP_FILE = "pyhttp.stop"
 
@@ -73,19 +75,25 @@ def main():
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(('', port))
         s.listen(1)
+        s.settimeout(1.0)  # Timeout on accept to 1 second
+
         print "Serving on port", port
         print "To stop the server, create a file named 'pyhttp.stop'"
+
         while 1:
             if os.path.exists(STOP_FILE):
                 print "Server stopped"
                 os.remove(STOP_FILE)
                 break
-            conn, addr = s.accept()
+            try:
+                conn, addr = s.accept()
+            except socket.timeout:
+                # Timeout expired, loop again to check stop file
+                continue
             serve(conn, os.getcwd())
             conn.close()
     except:
         print "Server error"
         sys.exit(1)
 
-import string
 main()
