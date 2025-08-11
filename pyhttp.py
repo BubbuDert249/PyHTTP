@@ -1,8 +1,7 @@
-import sys
-import os
 import socket
+import os
 import string
-import time
+import sys
 
 STOP_FILE = "pyhttp.stop"
 
@@ -11,7 +10,6 @@ def listdir(path):
         names = os.listdir(path)
     except:
         return "<html><body><h1>Can't list directory</h1></body></html>"
-
     names.sort()
     r = "<html><body><h1>Directory listing</h1><ul>"
     for name in names:
@@ -28,12 +26,31 @@ def readfile(path):
     except:
         return None
 
+def content_type_from_path(path):
+    # very basic mime type detection based on extension
+    dot = string.rfind(path, ".")
+    if dot == -1:
+        return "application/octet-stream"
+    ext = path[dot:]
+    if ext == ".html" or ext == ".htm":
+        return "text/html"
+    if ext == ".txt":
+        return "text/plain"
+    if ext == ".jpg":
+        return "image/jpeg"
+    if ext == ".png":
+        return "image/png"
+    return "application/octet-stream"
+
 def serve(conn, path):
     try:
         req = conn.recv(1024)
         if not req:
             return
+        # req is a string in python 1.x, no decode needed
         parts = string.split(req, "\r\n")
+        if len(parts) < 1:
+            return
         first = parts[0]
         words = string.split(first)
         if len(words) < 2:
@@ -42,40 +59,52 @@ def serve(conn, path):
         target = words[1]
 
         if target == "/":
-            index = os.path.join(path, "index.html")
-            if os.path.exists(index):
+            index = path + "/index.html"
+            try:
+                f = open(index)
+                f.close()
                 target = "/index.html"
+            except:
+                pass
 
-        full = os.path.join(path, target[1:])
-        if os.path.isdir(full):
+        full = path + "/" + target[1:]
+        try:
+            st = os.stat(full)
+        except:
+            st = None
+
+        if st and (st[0] & 0o170000) == 0o040000:  # directory check in old python (S_IFDIR)
             body = listdir(full)
-            conn.send("HTTP/1.0 200 OK\r\nContent-Type: text/html\r\n\r\n")
-            conn.send(body)
+            header = "HTTP/1.0 200 OK\r\nContent-Type: text/html\r\n\r\n"
+            conn.send(header + body)
         else:
             data = readfile(full)
             if data:
-                conn.send("HTTP/1.0 200 OK\r\n\r\n")
-                conn.send(data)
+                ctype = content_type_from_path(full)
+                header = "HTTP/1.0 200 OK\r\nContent-Type: %s\r\n\r\n" % ctype
+                # conn.send needs string, data is binary, in python1, strings are bytes, so send directly
+                conn.send(header + data)
             else:
-                conn.send("HTTP/1.0 404 Not Found\r\n\r\n404 Not Found")
+                body = "404 Not Found"
+                header = "HTTP/1.0 404 Not Found\r\nContent-Type: text/plain\r\n\r\n"
+                conn.send(header + body)
         print "Visited:", target
     except:
         print "Error in request"
 
 def main():
+    port = 8000
     if len(sys.argv) > 1:
         try:
-            port = int(sys.argv[1])
+            port = string.atoi(sys.argv[1])
         except:
             port = 8000
-    else:
-        port = 8000
 
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(('', port))
         s.listen(1)
-        s.settimeout(1.0)  # Timeout on accept to 1 second
+        # no settimeout in python 1.x socket, so just block on accept
 
         print "Serving on port", port
         print "To stop the server, create a file named 'pyhttp.stop'"
@@ -85,11 +114,7 @@ def main():
                 print "Server stopped"
                 os.remove(STOP_FILE)
                 break
-            try:
-                conn, addr = s.accept()
-            except socket.timeout:
-                # Timeout expired, loop again to check stop file
-                continue
+            conn, addr = s.accept()
             serve(conn, os.getcwd())
             conn.close()
     except:
