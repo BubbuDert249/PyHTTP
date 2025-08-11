@@ -1,7 +1,10 @@
+version = "1.1.7"
 import socket
 import os
 import string
 import sys
+
+py_version = string.split(sys.version, ' ')[0]
 
 STOP_FILE = "pyhttp.stop"
 
@@ -93,6 +96,7 @@ def serve(conn, path):
         print "Error in request"
 
 def main():
+    print "PyHTTP", version, "on Python", python_version
     port = 8000
     if len(sys.argv) > 1:
         try:
