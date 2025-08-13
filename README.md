@@ -1,5 +1,6 @@
 # PyHTTP
 A HTTP server host Python script for Python 1.4+ <br>
+It won't work in Python 3 and could work in Python 2, it is intended for Python 1 <Br>
 You use it via ```python pyhttp {port}``` (change {port} to the http port) <br>
 To stop the server, you create a file named ```pyhttp.stop``` <br>
 To open the server website, you open ```http://localhost:{port}``` in your browser <br>
