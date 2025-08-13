@@ -9,3 +9,9 @@ If you want, here is HTTP server hosters for Python 1, 2 and 3: <br>
 Python 3.0+ - ```http.server``` <br>
 Python 2.0+ - ```SimpleHTTPServer``` <br>
 Python 1.4+ - ```PyHTTP``` <br>
+# Setup <br>
+1. Go to C:\Python1\Lib
+   replace "Python1" with Python + the python version without dots, for example if i have python 1.5, it is Python15
+2. Copy PyHTTP.py from the release <br>
+3. Paste it to the folder you are in right now <br>
+Use ```import PyHTTP``` (replace pyhttp with the filename without extension if renamed) to run PyHTTP <Br>
