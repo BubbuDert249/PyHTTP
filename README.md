@@ -7,8 +7,8 @@ To stop the server, you click CTRL+C <br>
 To open the server website, you open ```http://localhost:{port}``` in your browser <br>
 The default port is 8000 <br>
 # Setup <br>
-1. Go to C:\Python1\Lib
-   replace "Python1" with Python + the python version without dots, for example if i have python 1.5, it is Python15
+1. Go to C:\Python1\Lib <br>
+   replace "Python1" with Python + the python version without dots, for example if i have python 1.5, it is Python15 <Br>
 2. Copy PyHTTP.py from the release <br>
 3. Paste it to the folder you are in right now <br>
 Use ```import PyHTTP``` (replace pyhttp with the filename without extension if renamed) to run PyHTTP <Br>
