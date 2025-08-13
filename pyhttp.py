@@ -1,4 +1,4 @@
-version = "1.2.1"
+version = "1.2.2"
 import socket
 import os
 import string
@@ -34,12 +34,29 @@ def content_type_from_path(path):
         ".html": "text/html",
         ".htm": "text/html",
         ".txt": "text/plain",
+        ".css": "text/css",
+        ".js": "application/javascript",
+        ".json": "application/json",
+        ".xml": "application/xml",
         ".jpg": "image/jpeg",
         ".jpeg": "image/jpeg",
         ".png": "image/png",
         ".gif": "image/gif",
-        ".css": "text/css",
-        ".js": "application/javascript"
+        ".bmp": "image/bmp",
+        ".ico": "image/x-icon",
+        ".svg": "image/svg+xml",
+        ".mp3": "audio/mpeg",
+        ".wav": "audio/wav",
+        ".ogg": "audio/ogg",
+        ".mp4": "video/mp4",
+        ".webm": "video/webm",
+        ".avi": "video/x-msvideo",
+        ".pdf": "application/pdf",
+        ".zip": "application/zip",
+        ".tar": "application/x-tar",
+        ".gz": "application/gzip",
+        ".rar": "application/vnd.rar",
+        ".exe": "application/octet-stream"
     }
     dot = string.rfind(path, ".")
     if dot == -1:
