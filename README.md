@@ -12,4 +12,5 @@ The default port is 8000 <br>
 3. Paste it to the folder you are in right now <br>
 Use ```import PyHTTP``` to run PyHTTP <Br>
 # Updates
-Added threading with the ```thread``` library so multiple users can enter the server <br>
+Extended MIME types - 1.2.2
+Added threading with the ```thread``` library so multiple users can enter the server - 1.2.5 <br>
