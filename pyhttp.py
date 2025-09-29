@@ -1,4 +1,4 @@
-version = "1.2.5"
+version = "1.2.6"
 
 import socket
 import os
@@ -37,8 +37,22 @@ def content_type_from_path(path):
         ".htm": "text/html",
         ".txt": "text/plain",
         ".css": "text/css",
+        ".py": "text/x-python",
+        ".pl": "text/x-perl",
+        ".rb": "text/x-ruby",
+        ".jad": "text/vnd.sun.j2me.app-descriptor",
+        ".c": "text/x-c",
+        ".cpp": "text/x-c++src",
+        ".cc": "text/x-c++src",
+        ".cxx": "text/x-c++src",
+        ".java": "text/x-java-source",
+        ".vbs": "text/vbscript",
+        ".as": "text/x-actionscript",
+        ".swf": "application/x-shockwave-flash",
+        ".swc": "application/x-shockwave-flash",
         ".js": "application/javascript",
         ".json": "application/json",
+        ".jar": "application/java-archive",
         ".xml": "application/xml",
         ".jpg": "image/jpeg",
         ".jpeg": "image/jpeg",
@@ -54,8 +68,13 @@ def content_type_from_path(path):
         ".webm": "video/webm",
         ".avi": "video/x-msvideo",
         ".pdf": "application/pdf",
+        ".sh": "application/x-sh",
+        ".command": "application/x-sh",
         ".zip": "application/zip",
         ".tar": "application/x-tar",
+        ".7z": "application/x-7z-compressed",
+        ".php": "application/x-httpd-php",
+        ".xz": "application/x-xz",
         ".gz": "application/gzip",
         ".rar": "application/vnd.rar",
         ".exe": "application/octet-stream"
@@ -121,6 +140,15 @@ def serve_thread(conn, path):
 
 def main():
     port = 8000
+
+if sys.version[0] != '1':
+    msg = "PyHTTP is intended to run on Python 1.x.\n" \
+          "To use, run this on Python 1.5 or newer (running on Python {}.x).".format(sys.version[0])
+    try:
+        print(msg)  # Python 3.x
+    except:
+        print msg  # Python 2.x
+    sys.exit(1)  # Stop server
     if len(sys.argv) > 1:
         try:
             port = string.atoi(sys.argv[1])
