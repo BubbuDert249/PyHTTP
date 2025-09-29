@@ -14,3 +14,4 @@ Use ```import PyHTTP``` to run PyHTTP <Br>
 # Updates
 Extended MIME types - 1.2.2 <br>
 Added threading with the ```thread``` library so multiple users can enter the server - 1.2.5 <br>
+Extended MIME types - 1.2.6
