@@ -40,6 +40,11 @@ def content_type_from_path(path):
         ".py": "text/x-python",
         ".pl": "text/x-perl",
         ".rb": "text/x-ruby",
+        ".ini": "text/x-ini",
+        ".inf": "text/x-inf",
+        ".nfo": "text/x-nfo",
+        ".md": "text/markdown",
+        ".rst": "text/x-rst",
         ".jad": "text/vnd.sun.j2me.app-descriptor",
         ".c": "text/x-c",
         ".cpp": "text/x-c++src",
@@ -72,12 +77,17 @@ def content_type_from_path(path):
         ".command": "application/x-sh",
         ".zip": "application/zip",
         ".tar": "application/x-tar",
+        ".zst": "application/zst",
+        ".deb": "application/x-deb",
+        ".nupkg": "application/zip",
+        ".dmg": "application/x-apple-diskimage",
         ".7z": "application/x-7z-compressed",
         ".php": "application/x-httpd-php",
         ".xz": "application/x-xz",
         ".gz": "application/gzip",
         ".rar": "application/vnd.rar",
-        ".exe": "application/octet-stream"
+        ".exe": "application/vnd.microsoft.portable-executable",
+        ".msi": "application/x-msi"
     }
     dot = string.rfind(path, ".")
     if dot == -1:
