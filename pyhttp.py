@@ -38,6 +38,7 @@ def content_type_from_path(path):
         ".txt": "text/plain",
         ".css": "text/css",
         ".py": "text/x-python",
+        ".pyz": "text/x-python",
         ".pl": "text/x-perl",
         ".rb": "text/x-ruby",
         ".ini": "text/x-ini",
