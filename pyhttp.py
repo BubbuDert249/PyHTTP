@@ -1,8 +1,10 @@
-version = "1.2.2"
+version = "1.2.5"
+
 import socket
 import os
 import string
 import sys
+import thread
 
 py_version = string.split(sys.version, ' ')[0]
 
@@ -111,6 +113,11 @@ def serve(conn, path):
         print "Visited:", target
     except:
         print "Error in request"
+    finally:
+        conn.close()
+
+def serve_thread(conn, path):
+    serve(conn, path)
 
 def main():
     port = 8000
@@ -122,15 +129,17 @@ def main():
 
     print "PyHTTP", version, "on Python", py_version
     print "Serving on port", port
+
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(('', port))
-        s.listen(1)
+        s.listen(5)  # allow backlog of 5 connections
+
         while 1:
             try:
                 conn, addr = s.accept()
-                serve(conn, os.getcwd())
-                conn.close()
+                # Spawn a new thread for each client
+                thread.start_new_thread(serve_thread, (conn, os.getcwd()))
             except KeyboardInterrupt:
                 print "\nServer stopped by Ctrl+C"
                 break
